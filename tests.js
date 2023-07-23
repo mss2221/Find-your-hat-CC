@@ -37,26 +37,9 @@ let foundHole= false;
 
 while (!foundHat && !foundHole) {
   const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
-  if(move==='d'){  
-   fieldArray[0][0]=fieldCharacter;
-    fieldArray[1][0]=pathCharacter;
-    myField.print();
-    const move2 = prompt('Please select a new direction:');;
-    if(move2==='d'){
-      fieldArray[1][0]=fieldCharacter;
-      fieldArray[2][0]=pathCharacter;
-      myField.print();
-      const move3 = prompt('Please select a new direction:');
-      if(move3==='r'){
-        console.log('Congratulations! You found your hat!')
-        foundHat=true
-      }
-
-    }
-
-  }else{
-    console.log('You lost your hat forever!');
-    foundHole=true;
-  
-  }
+ switch(move){
+    case 'u':
+        console.log(You fell out of the field!);
+        foundHole=true;
+ }
 }

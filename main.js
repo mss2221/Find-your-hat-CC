@@ -82,8 +82,25 @@ while (!foundHat && !foundHole) {
   } else if () {
 // pathPositionCoordinates > fieldLength || > fieldHeight, then foundHole=True, 'you lose', break
   };
-
 */
+
+  pathPosition = fieldArray[pathPositionX][pathPositionY];
+  console.log('path position = ', pathPosition);
+  if (pathPosition === '^') {
+    console.log('Congratulations! You found your hat!');
+    foundHat = true;
+  } else if (pathPosition === 'O') {
+    console.log('You fell into a hole!');
+    foundHole = true;
+  }
+  /*  Some problems here:
+
+      else if (pathPositionX < 0 || pathPositionX > 2 || pathPositionY < 0 || pathPositionY > 2) {
+      console.log('You fell out of the field!');
+      foundHole = true;
+    }
+  */
+
 // draw new array -
 
   fieldArray[pathPositionX][pathPositionY] = pathCharacter;

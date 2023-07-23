@@ -32,21 +32,47 @@ myField.print()
 
 let foundHat= false;
 let foundHole= false;
+let pathPositionX = 0;
+let pathPositionY = 0;
+let pathPosition = fieldArray[0][0];
 
 
 // loop and compare '*' position
 while (!foundHat && !foundHole) {
-
   const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
   console.log(move);
-// calculate pathPosition indices
+// starting coordinates
+  let oldX = pathPositionX;
+  let oldY = pathPositionY;
+  console.log('path position X start of loop : ', oldX);
+  console.log('path position Y start of loop : ', oldY);
 
-/*
+/* calculate pathPosition indices
+
   down   = firstIndex plus 1
   up     = firstIndex minus 1
   right  = secondIndex plus 1
   left   = secondIndex minus 1
 */
+  switch(move) {
+    case 'u':
+      pathPositionX -=1;
+      break;
+    case 'd':
+      pathPositionX +=1;
+      break;
+    case 'l':
+      pathPositionY -=1;
+      break;
+    case 'r':
+      console.log('right')
+      pathPositionY +=1;
+      break;
+    };
+  console.log('New coordinates: \n X=',pathPositionX,' Y=',pathPositionY);
+  pathPosition = fieldArray[pathPositionX][pathPositionY];
+  console.log('Path Position: ',pathPosition);
+
 /*
  TODO: run tests
   if () {
@@ -59,8 +85,9 @@ while (!foundHat && !foundHole) {
 
 */
 // draw new array -
-// new pathPositionCoordinates = pathCharacter
-// old pathPositionCoordinates = fieldCharacter
+
+  fieldArray[pathPositionX][pathPositionY] = pathCharacter;
+  fieldArray[oldX][oldY] = fieldCharacter;
   myField.print();
 }
 

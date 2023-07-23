@@ -36,7 +36,7 @@ let foundHole= false;
 
 // loop and compare '*' position
 while (!foundHat && !foundHole) {
-
+  myField.print();
   const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
   console.log(move);
 // calculate pathPosition indices
@@ -61,7 +61,7 @@ while (!foundHat && !foundHole) {
 // draw new array -
 // new pathPositionCoordinates = pathCharacter
 // old pathPositionCoordinates = fieldCharacter
-  myField.print();
+
 }
 
 

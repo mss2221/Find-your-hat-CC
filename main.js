@@ -44,8 +44,6 @@ while (!foundHat && !foundHole) {
 // starting coordinates
   let oldX = pathPositionX;
   let oldY = pathPositionY;
-  console.log('path position X start of loop : ', oldX);
-  console.log('path position Y start of loop : ', oldY);
 
 /* calculate pathPosition indices
 
@@ -56,21 +54,20 @@ while (!foundHat && !foundHole) {
 */
   switch(move) {
     case 'u':
-      pathPositionX -=1;
-      break;
-    case 'd':
-      pathPositionX +=1;
-      break;
-    case 'l':
       pathPositionY -=1;
       break;
-    case 'r':
-      console.log('right')
+    case 'd':
       pathPositionY +=1;
+      break;
+    case 'l':
+      pathPositionX -=1;
+      break;
+    case 'r':
+      pathPositionX +=1;
       break;
     };
   console.log('New coordinates: \n X=',pathPositionX,' Y=',pathPositionY);
-  pathPosition = fieldArray[pathPositionX][pathPositionY];
+  pathPosition = fieldArray[pathPositionY][pathPositionX];
   console.log('Path Position: ',pathPosition);
 
 /*
@@ -84,7 +81,7 @@ while (!foundHat && !foundHole) {
   };
 */
 
-  pathPosition = fieldArray[pathPositionX][pathPositionY];
+  pathPosition = fieldArray[pathPositionY][pathPositionX];
   console.log('path position = ', pathPosition);
   if (pathPosition === '^') {
     console.log('Congratulations! You found your hat!');
@@ -103,8 +100,8 @@ while (!foundHat && !foundHole) {
 
 // draw new array -
 
-  fieldArray[pathPositionX][pathPositionY] = pathCharacter;
-  fieldArray[oldX][oldY] = fieldCharacter;
+  fieldArray[pathPositionY][pathPositionX] = pathCharacter;
+  fieldArray[oldY][oldX] = fieldCharacter;
   myField.print();
 }
 

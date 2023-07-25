@@ -89,6 +89,9 @@ while (!foundHat && !foundHole) {
   } else if (pathPosition === 'O') {
     console.log('You fell into a hole!');
     foundHole = true;
+  } else if (pathPosition=== undefined){
+    console.log('You fell out of the field!');
+    foundHole = true;
   }
   /*  Some problems here:
 

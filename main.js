@@ -6,27 +6,16 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
-// later this can be randomized and put into Field constructor
-let fieldArray = [
-  ['*', '░', 'O'],
-  ['░', 'O', '░'],
-  ['░', '^', '░'],
-]
-
 // 'list' is prob not best term to use in variables,
 // esp since it is a data type in Python. But I like
 // how we have it here, where 'array' refers to the whole 2-dimensional field.
 class Field {
-  constructor(field){
-    this.field=field
+  constructor(){
+    this.field = []
   };
 // changed .print() method to .generateField() to match Codecademy tasks
 // also Codecademy suggest making this a static function
-   generateField(height,width){
-    console.log(this.field[0].join(''));
-    console.log(this.field[1].join(''));
-    console.log(this.field[2].join(''))
-  };
+
   selectCharacters(height,width) {
     const characterList = [];
     const listLength = height * width;
@@ -53,7 +42,6 @@ class Field {
   }
 // add pathCharacter at start
   characterList.splice(0,0,'*')
-  console.log('Full Character List Array ===== ' , characterList)
 
 // calculate number of elements that should be in each row
 // splice off elements from the original array and push into row
@@ -69,31 +57,39 @@ class Field {
 //  now with the characterList broken up into rows (arrays)
 //  and pushed into startingField array:
 //  Loop through startingField for each row in height variable
-
+    return startingField
+  }
+  printField(field) {
+    let height = field.length;
     for (let i = 0; i < height; i++) {
-      console.log(startingField[i].join(''));
-    }
+    console.log(field[i].join(''));
+  }
   }
 }
 
-const myField = new Field(fieldArray);
-myField.generateField(1,2);
-myField.selectCharacters(8,10);
+// All our functions are methods on the Field class.
+// I am not sure I see the reason for this.
+// Perhaps Codecademy was thinking every move would create
+// a new instance of the Field class.
+// We are creating 1 field, and then mutating it. (which seems the simplest way to go)
+const myField = new Field();
+gameArray = myField.selectCharacters(4,5);
+myField.printField(gameArray);
 
-//myField.generateField();
-//Field.staticMethod();
-//Field.print();
+
+// PLAY GAME!
+
 let foundHat= false;
 let foundHole= false;
 let pathPositionX = 0;
 let pathPositionY = 0;
-let pathPosition = fieldArray[0][0];
+let pathPosition = gameArray[0][0];
 
 
 // loop and compare '*' position
 while (!foundHat && !foundHole) {
   const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
-  console.log(move);
+
 // starting coordinates
   let oldX = pathPositionX;
   let oldY = pathPositionY;
@@ -112,26 +108,30 @@ while (!foundHat && !foundHole) {
       pathPositionX +=1;
       break;
     };
-  console.log('New coordinates: \n X=',pathPositionX,' Y=',pathPositionY);
-  pathPosition = fieldArray[pathPositionY][pathPositionX];
-  console.log('Path Position: ',pathPosition);
 
-  pathPosition = fieldArray[pathPositionY][pathPositionX];
-  console.log('path position = ', pathPosition);
+  // I removed `position = undefined` because I was getting unexpected behavior
+  // I changed something and then I was able to continue moving right across the field and beyond.
+  if  (pathPositionY >= gameArray.length || pathPositionY < 0 ) {
+        console.log('You fell out of the field!');
+        foundHole = true;
+        break;
+  }
+  if  (pathPositionX >= gameArray[0].length || pathPositionX < 0 ) {
+        console.log('You fell out of the field!');
+        foundHole = true;
+        break;
+  }
+  pathPosition = gameArray[pathPositionY][pathPositionX];
   if (pathPosition === '^') {
-    console.log('Congratulations! You found your hat!');
-    foundHat = true;
+        console.log('Congratulations! You found your hat!');
+        foundHole = true;
+        break;
   } else if (pathPosition === 'O') {
     console.log('You fell into a hole!');
     foundHole = true;
-  } else if (pathPosition=== undefined){
-    console.log('You fell out of the field!');
-    foundHole = true;
+    break;
   }
-
 // draw new array -
-
-  fieldArray[pathPositionY][pathPositionX] = pathCharacter;
-//  fieldArray[oldY][oldX] = fieldCharacter; -- supposed to trace the path through the field
-  myField.print();
+  gameArray[pathPositionY][pathPositionX] = pathCharacter;
+  myField.printField(gameArray);
 }

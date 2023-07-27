@@ -15,7 +15,7 @@ let fieldArray = [
 
 // 'list' is prob not best term to use in variables,
 // esp since it is a data type in Python. But I like
-// using 'array' to refer to the whole 2-dimensional field.
+// how we have it here, where 'array' refers to the whole 2-dimensional field.
 class Field {
   constructor(field){
     this.field=field
@@ -55,48 +55,30 @@ class Field {
   characterList.splice(0,0,'*')
   console.log('Full Character List Array ===== ' , characterList)
 
-// TODO: turn the 'list' array into the 2-dimensional fieldArray
-/*
-  let startingField = {}
-  for each row (i < height):
-    make an array - take 1st (width) number of elements.
-  console.log(startingField);
-  return startingField
+// calculate number of elements that should be in each row
+// splice off elements from the original array and push into row
 
+    let startingField = [];
+    let row = [];
+    let numberOfCharacters = characterList.length;
+    let rowLength = numberOfCharacters/height;
+    for (let i = 0; i < height; i++) {
+        const row = characterList.splice(0,rowLength);
+        startingField.push(row);
+      }
+//  now with the characterList broken up into rows (arrays)
+//  and pushed into startingField array:
+//  Loop through startingField for each row in height variable
 
-
-
-  const list = [1, 2, 3, 4, 5, 6];
-const middleIndex = Math.ceil(list.length / 2);
-
-const firstHalf = list.splice(0, middleIndex);
-const secondHalf = list.splice(-middleIndex);
-*/
-
-  let startingField = [];
-  let row = [];
-  let numberOfCharacters = characterList.length;
-  let rowLength = numberOfCharacters/height;
-  for (let i = 0; i < height; i++) {
-      console.log('inside loop - Iteration ', i+1);
-      const row = characterList.splice(0,rowLength);
-      console.log('row AFTER Splice: =', row);
-      console.log('characterList AFTER Splice: = ', characterList);
-      startingField[i].push(row)
-      console.log(startingField)
-    }
-  //  console.log('starting field loop: ', startingField)
-  //  for (let i = 0; i < height; i++) {
-//      console.log(this.startingField[i].join(''));
+    for (let i = 0; i < height; i++) {
+      console.log(startingField[i].join(''));
     }
   }
+}
 
-
-
-// print the field
 const myField = new Field(fieldArray);
 myField.generateField(1,2);
-myField.selectCharacters(8,9);
+myField.selectCharacters(8,10);
 
 //myField.generateField();
 //Field.staticMethod();

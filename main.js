@@ -1,57 +1,103 @@
 const prompt = require('prompt-sync')({sigint: true});
-//const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...')
 
 const hat = '^';
 const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
-// later this can be randomized and put into Field constructor
-const fieldArray = [
-  ['*', '░', 'O'],
-  ['░', 'O', '░'],
-  ['░', '^', '░'],
-]
-
-// right now this is used primarily for print method
-// later, arguments might be field size? length x height
+const getMove = () => {
+    move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
+    return move;
+  } 
+  
 class Field {
-  constructor(field){
-    this.field=field
+  constructor(){
+    this.field = []
   };
+  // changed .print() method to .generateField() to match Codecademy tasks
+  // Also, Codecademy suggest making this a static function
+  selectCharacters() {
+    console.log('Create playing field:')
+    const height = prompt('   select field height: ');
+    const width = prompt('   select field width: ')
+    const characterList = [];
+    const listLength = height * width;
+    characterList.push('^');
+  // calculate percentage of Os (~2%?)
+    const totalHoles = parseInt(listLength * 0.2);
+    for (let i = 0; i < totalHoles; i++) {
+        characterList.push('O');
+    };
+  // calculate number of fieldCaracters to add. minus holes, hat , asterisk
+    const totalFieldCharacters = listLength - totalHoles - 2
 
-  print(){
-    console.log(this.field[0].join(''));
-    console.log(this.field[1].join(''));
-    console.log(this.field[2].join(''))
-  };
-};
-// print the field
-const myField = new Field(fieldArray);
-myField.print()
+  // add fieldCharacters to list, leave space for * at beginning
+    for (let i = 0; i < totalFieldCharacters; i++) {
+      characterList.push('░')
+    }
+  // randomize elements. This is from stack overflow
+  // and to me was clearest method I found.
+    for (let i = characterList.length - 1; i > 0; i--) {
+      let rand = Math.floor(Math.random() * (i + 1));
+      [characterList[i], characterList[rand]] = [characterList[rand], characterList[i]]
+    }
+  // add pathCharacter at start
+    characterList.splice(0,0,'*')
 
+  // calculate number of elements that should be in each row
+  // splice off elements from the original array and push into row
+
+    let startingField = [];
+    let row = [];
+    let numberOfCharacters = characterList.length;
+    let rowLength = numberOfCharacters/height;
+    for (let i = 0; i < height; i++) {
+      const row = characterList.splice(0,rowLength);
+      startingField.push(row);
+    }
+    return startingField
+  }
+  printField(field) {
+    let height = field.length;
+    for (let i = 0; i < height; i++) {
+    console.log(field[i].join(''));
+    }
+  }
+}
+
+
+// All our functions are methods on the Field class.
+// I am not sure I see the reason for this.
+// Perhaps Codecademy was thinking every move would create
+// a new instance of the Field class.
+// We are creating 1 field, and then mutating it. (which seems the simplest way to go)
+
+// Start Game
+
+// Setup field
+let newField = new Field();
+gameArray = newField.selectCharacters();
+
+
+// initial conditions
 let foundHat= false;
 let foundHole= false;
 let pathPositionX = 0;
 let pathPositionY = 0;
-let pathPosition = fieldArray[0][0];
+let pathPosition = gameArray[0][0];
 
+// PLAY GAME!
 
-// loop and compare '*' position
+// loop: get move, advance '*', evaluate position, redraw field
 while (!foundHat && !foundHole) {
-  const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
-  console.log(move);
-// starting coordinates
-  let oldX = pathPositionX;
-  let oldY = pathPositionY;
+  // update field and print to console
+    gameArray[pathPositionY][pathPositionX] = pathCharacter;
+    newField.printField(gameArray);
 
-/* calculate pathPosition indices
+  // I kept getting the prompt even after breaking out of loop. 
+  // So I tried putting it into a function and that seems to work.
+  move = getMove();
 
-  down   = firstIndex plus 1
-  up     = firstIndex minus 1
-  right  = secondIndex plus 1
-  left   = secondIndex minus 1
-*/
   switch(move) {
     case 'u':
       pathPositionY -=1;
@@ -66,178 +112,30 @@ while (!foundHat && !foundHole) {
       pathPositionX +=1;
       break;
     };
-  console.log('New coordinates: \n X=',pathPositionX,' Y=',pathPositionY);
-  pathPosition = fieldArray[pathPositionY][pathPositionX];
-  console.log('Path Position: ',pathPosition);
+ 
+ // check if move results in Win or Lose
 
-/*
- TODO: run tests
-  if () {
-// pathPositionCoordinates = '^', then findHat=True, print 'you win',  break
-  } else if () {
-// pathPositionCoordinates = 'o', then foundHole=True, print 'you lose',  break
-  } else if () {
-// pathPositionCoordinates > fieldLength || > fieldHeight, then foundHole=True, 'you lose', break
-  };
-*/
+ // break out of loop if x or y is negative
+ // before evaluating gameArray[x][y]
+ // (I removed `position = undefined` test because I was getting unexpected behavior)
 
-  pathPosition = fieldArray[pathPositionY][pathPositionX];
-  console.log('path position = ', pathPosition);
-  if (pathPosition === '^') {
-    console.log('Congratulations! You found your hat!');
-    foundHat = true;
-  } else if (pathPosition === 'O') {
-    console.log('You fell into a hole!');
-    foundHole = true;
-  } else if (pathPosition=== undefined){
-    console.log('You fell out of the field!');
-    foundHole = true;
+  if (pathPositionX < 0 || pathPositionY < 0) {
+    console.log('\nYou fell out of the field!');
+    break;
+  } else if (pathPositionX >= gameArray[0].length || pathPositionY >= gameArray.length) {
+    console.log('\nYou fell out of the field!');
+    break;
   }
-  /*  Some problems here:
 
-      else if (pathPositionX < 0 || pathPositionX > 2 || pathPositionY < 0 || pathPositionY > 2) {
-      console.log('You fell out of the field!');
-      foundHole = true;
-    }
-  */
-
-// draw new array -
-
-  fieldArray[pathPositionY][pathPositionX] = pathCharacter;
-  fieldArray[oldY][oldX] = fieldCharacter;
-  myField.print();
+   // now calculate the * position
+   pathPosition = gameArray[pathPositionY][pathPositionX];
+  if (pathPosition === '^') {
+    console.log('\nCongratulations! You found your hat!');
+    break;
+  } else if (pathPosition === 'O') {
+    console.log('\nYou fell into a hole!');
+    break;
+  }
+  pathPosition = pathCharacter;
 }
-
-
-
-/*
-while (!foundHat && !foundHole) {
-  const move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
-  switch(move){
-    case 'u':
-        console.log('You fell out of the field!');
-        foundHole=true;
-        break;
-    case 'l':
-        console.log('You fell out of the field!');
-        foundHole=true;
-        break;
-    case 'd':
-        fieldArray[0][0]=fieldCharacter;
-        fieldArray[1][0]=pathCharacter;
-        myField.print();
-        let move2 = prompt('Please select a new direction:')
-        switch(move2){
-            case 'd':
-                fieldArray[1][0]=fieldCharacter;
-                fieldArray[2][0]=pathCharacter;
-                myField.print();
-                let move3 = prompt('Please select a new direction:');
-                switch(move3){
-                    case 'r':
-                        console.log('Congratulations! You found your hat!');
-                        foundHat=true
-                        break;
-
-                    case 'd':
-                        console.log('You fell out of the field!');
-                        foundHole=true;
-                        break;
-
-                    case 'l':
-                        console.log('You fell out of the field!');
-                        foundHole=true;
-                        break;
-
-                    case 'u':
-                        fieldArray[2][0]=fieldCharacter;
-                        fieldArray[1][0]=pathCharacter;
-                        myField.print();
-                        let move3u = prompt('Please select a new direction:');
-                        switch(move3u){
-                            case 'u':
-                                fieldArray[1][0]=fieldCharacter;
-                                fieldArray[0][0]=pathCharacter;
-                                myField.print();
-                                break;
-                            case 'r':
-                                console.log('You fell out of the field!');
-                                foundHole=true;
-                                break;
-                            case 'l':
-                                console.log('You fell out of the field!');
-                                foundHole=true;
-                                break
-                            case 'd':
-                                fieldArray[1][0]=fieldCharacter;
-                                fieldArray[2][0]=pathCharacter;
-                                myField.print();
-                                let move4u = prompt('Please select a new direction:');
-                                switch(move4u){
-                                    case 'l':
-                                        console.log('You fell out of the field!');
-                                        foundHole=true;
-                                        break
-                                    case 'd':
-                                        console.log('You fell out of the field!');
-                                        foundHole=true;
-                                        break
-                                    case 'r':
-                                        console.log('Congratulations! You found your hat!');
-                                        foundHat=true
-                                        break;
-                                    case 'u':
-                                        fieldArray[2][0]=fieldCharacter;
-                                        fieldArray[1][0]=pathCharacter;
-                                        myField.print();
-
-                                }
-                        }
-
-
-                } break;
-            case 'u':
-                fieldArray[1][0]=fieldCharacter;
-                fieldArray[0][0]=pathCharacter;
-                myField.print();
-                break;
-
-            case 'r':
-                console.log('You fell out of the field!');
-                foundHole=true;
-                break;
-
-            case 'l':
-                console.log('You fell out of the field!');
-                foundHole=true;
-                break;
-
-        } break;
-    case 'r':
-        fieldArray[0][0]=fieldCharacter;
-        fieldArray[0][1]=pathCharacter;
-        myField.print();
-        let move2r = prompt('Please select a new direction:')
-        switch(move2r){
-            case 'u':
-                console.log('You fell out of the field!');
-                foundHole=true;
-                break;
-            case 'r':
-                console.log('You fell out of the field!');
-                foundHole=true;
-                break;
-            case 'd':
-                console.log('You fell out of the field!');
-                foundHole=true;
-                break;
-            case 'l':
-                fieldArray[0][1]=fieldCharacter;
-                fieldArray[0][0]=pathCharacter;
-                myField.print();
-                break;
-        }
-
- }
-}
-*/
+console.log('\n    [  game over  ]') 

@@ -10,6 +10,7 @@ Requires a working version of node and npm.
 
 ## Setup
 
+Install dependencies
 ```
         npm install
 ```
@@ -21,13 +22,13 @@ Requires a working version of node and npm.
         node main.js
 ```
 
-3. Follow the instructions in the terminal to create playing field
+2. Follow the instructions in the terminal to create playing field
 ```
       select field height:
       select field width:
 ```
 
-4. Play game
+3. Play game
 ```
         ^ = hat
         O = hole

@@ -18,7 +18,7 @@ class Field {
   // changed .print() method to .generateField() to match Codecademy tasks
   // Also, Codecademy suggest making this a static function
   selectCharacters() {
-    console.log('Create playing field:')
+    console.log('Create playing field:\nEnter any integer\n(try somewhere around 5 - 12) ')
     const height = prompt('   select field height: ');
     const width = prompt('   select field width: ')
     const characterList = [];

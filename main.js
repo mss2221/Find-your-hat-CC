@@ -9,8 +9,8 @@ const pathCharacter = '*';
 const getMove = () => {
     move = prompt('Please select direction to move; Up:u, Down:d, Left:l, Right:r ...');
     return move;
-  } 
-  
+  }
+
 class Field {
   constructor(){
     this.field = []
@@ -95,8 +95,6 @@ while (!foundHat && !foundHole) {
     gameArray[pathPositionY][pathPositionX] = pathCharacter;
     newField.printField(gameArray);
 
-  // I kept getting the prompt even after breaking out of loop. 
-  // So I tried putting it into a function and that seems to work.
   move = getMove();
 
   switch(move) {
@@ -113,12 +111,11 @@ while (!foundHat && !foundHole) {
       pathPositionX +=1;
       break;
     };
- 
+
  // check if move results in Win or Lose
 
  // break out of loop if x or y is negative
  // before evaluating gameArray[x][y]
- // (I removed `position = undefined` test because I was getting unexpected behavior)
 
   if (pathPositionX < 0 || pathPositionY < 0) {
     console.log('\nYou fell out of the field!');
@@ -139,4 +136,4 @@ while (!foundHat && !foundHole) {
   }
   pathPosition = pathCharacter;
 }
-console.log('\n    [  game over  ]') 
+console.log('\n    [  game over  ]\n')

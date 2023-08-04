@@ -2,10 +2,23 @@
   "name": "find-your-hat",
   "version": "1.0.0",
   "description": "A terminal maze-solving game.",
-  "main": "main.js",
-  "author": "Codecademy",
   "license": "ISC",
+  "author": "Codecademy",
+  "main": "main.js",
   "dependencies": {
-    "prompt-sync": "^4.1.7"
-  }
+    "prompt-sync": "^4.1.7",
+    "terminal-kit": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mss2221/Find-your-hat-CC.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mss2221/Find-your-hat-CC/issues"
+  },
+  "homepage": "https://github.com/mss2221/Find-your-hat-CC#readme"
 }

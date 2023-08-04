@@ -10,20 +10,13 @@ Requires a working version of node and npm.
 
 ## Setup
 
-1. Install
 ```
         npm install
 ```
 
 ## Run program
 
-1. Enter command
-```
-        node main.js
-```
-
-
-2. Run the program:
+1.  Enter command:
 ```
         node main.js
 ```
@@ -34,7 +27,7 @@ Requires a working version of node and npm.
       select field width:
 ```
 
-4. play game
+4. Play game
 ```
         ^ = hat
         O = hole
